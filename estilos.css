@@ -20,7 +20,7 @@ body {
 
 /* Espacio 3D */
 .escena {
-  perspective: 1800px;
+  perspective: 2000px;
   margin-bottom: 24px;
   display: flex;
   justify-content: center;
@@ -29,15 +29,14 @@ body {
 
 .libro {
   position: relative;
-  width: 370px;
-  height: 500px;
+  width: 380px;
+  height: 510px;
   transform-style: preserve-3d;
-  transition: transform 0.8s ease;
+  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Centra el libro abierto en pantallas grandes */
 .libro.abierto {
-  transform: translateX(185px);
+  transform: translateX(190px);
 }
 
 .hoja {
@@ -48,7 +47,7 @@ body {
   left: 0;
   transform-origin: left center;
   transform-style: preserve-3d;
-  transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: transform 0.85s cubic-bezier(0.645, 0.045, 0.355, 1);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -60,30 +59,29 @@ body {
 
 .cara {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   padding: 32px 28px;
   background-color: #F5EEDD;
   border-radius: 6px 20px 20px 6px;
-  box-shadow: inset 12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
+  box-shadow: inset 12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.15);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   line-height: 1.65;
-  font-size: 1.05rem;
+  font-size: 1.03rem;
 }
 
 .cara.atras {
   transform: rotateY(180deg);
   border-radius: 20px 6px 6px 20px;
-  box-shadow: inset -12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
+  box-shadow: inset -12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.15);
 }
 
 /* Portada y Contraportada */
 .portada, .contraportada {
-  background: linear-gradient(160deg, #16587B 0%, #84B3CE 150%);
+  background: linear-gradient(160deg, #16587B 0%, #84B3CE 160%);
   color: #F5EEDD;
   text-align: center;
   justify-content: center;
@@ -97,22 +95,21 @@ body {
 }
 
 .portada h1 {
-  font-size: 2.3rem;
+  font-size: 2.2rem;
   margin-bottom: 8px;
-  letter-spacing: 0.5px;
   color: #F5EEDD;
 }
 
 .subtitulo {
   font-style: italic;
   color: #F5EEDD;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
 .indicador {
-  margin-top: 40px;
+  margin-top: 36px;
   font-size: 0.85rem;
-  background: rgba(245, 238, 221, 0.2);
+  background: rgba(245, 238, 221, 0.22);
   color: #F5EEDD;
   padding: 6px 14px;
   border-radius: 20px;
@@ -121,7 +118,7 @@ body {
 /* Espacio para ilustraciones */
 .marco-ilustracion {
   width: 100%;
-  height: 210px;
+  height: 205px;
   background-color: rgba(132, 179, 206, 0.22);
   border: 2px dashed #84B3CE;
   border-radius: 16px;
@@ -162,6 +159,8 @@ body {
 .controles {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 button {
@@ -195,7 +194,7 @@ button:hover {
   color: #16587B;
 }
 
-/* --- ADAPTACIÓN LIMPIA PARA CELULARES --- */
+/* Celulares y pantallas angostas */
 @media (max-width: 800px) {
   body {
     padding: 16px;
@@ -203,50 +202,48 @@ button:hover {
 
   .escena {
     width: 100%;
-    max-width: 100%;
-    perspective: 1200px;
+    perspective: none;
     margin-bottom: 20px;
   }
 
   .libro {
-    width: min(86vw, 340px);
-    height: min(68dvh, 460px);
+    width: min(88vw, 350px);
+    height: min(68dvh, 470px);
     transform: none !important;
+    transform-style: flat;
   }
 
-  .libro.abierto {
+  .hoja,
+  .hoja.volteada {
+    position: static;
+    width: 100%;
+    height: 100%;
     transform: none !important;
+    transform-style: flat;
+    transition: none;
   }
 
-  .cara {
-    padding: 22px 18px;
-    font-size: clamp(0.9rem, 3.8vw, 1rem);
-    line-height: 1.55;
-    border-radius: 16px;
-  }
-
+  .cara,
   .cara.atras {
-    border-radius: 16px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform: none !important;
+    backface-visibility: visible;
+    -webkit-backface-visibility: visible;
+    border-radius: 18px;
+    padding: 24px 20px;
+    font-size: clamp(0.92rem, 3.8vw, 1rem);
+    line-height: 1.58;
   }
 
   .marco-ilustracion {
-    height: 165px;
+    height: 170px;
     border-radius: 12px;
     margin-bottom: 12px;
   }
 
   .portada h1 {
-    font-size: clamp(1.5rem, 7vw, 2rem);
-  }
-
-  .controles {
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  button {
-    padding: 10px 18px;
-    font-size: 0.9rem;
+    font-size: clamp(1.55rem, 7vw, 2rem);
   }
 }

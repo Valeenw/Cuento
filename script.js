@@ -4,18 +4,18 @@ const btnAnterior = document.getElementById('btn-anterior');
 const btnSiguiente = document.getElementById('btn-siguiente');
 const btnReiniciar = document.getElementById('btn-reiniciar');
 
-// Lista ordenada de todas las caras del libro en lectura lineal para móvil:
-// [Portada, Pág 1, Pág 2, Pág 3, Pág 4, Contraportada]
-const carasMovil = [];
+// Todas las caras en orden de lectura:
+// 0: Portada | 1: Pág 1 | 2: Pág 2 | 3: Pág 3 | 4: Pág 4 | 5: Contraportada
+const todasLasCaras = [];
 hojas.forEach((hoja) => {
   const frente = hoja.querySelector('.cara.frente');
   const atras = hoja.querySelector('.cara.atras');
-  if (frente) carasMovil.push(frente);
-  if (atras) carasMovil.push(atras);
+  if (frente) todasLasCaras.push(frente);
+  if (atras) todasLasCaras.push(atras);
 });
 
-let hojaActual = 0;       // Para escritorio (0 a hojas.length)
-let pasoMovil = 0;        // Para móvil (0 a carasMovil.length - 1)
+let hojaActual = 0; // Escritorio: 0 = cerrada, 1..totalHojas = hojas volteadas
+let pasoMovil = 0;  // Móvil: 0..todasLasCaras.length - 1
 const totalHojas = hojas.length;
 
 function esMovil() {
@@ -26,33 +26,25 @@ function actualizarLibro() {
   if (esMovil()) {
     libro.classList.remove('abierto');
 
-    // Limpia estilos 3D de escritorio
     hojas.forEach((hoja) => {
-      hoja.style.display = 'block';
-      hoja.style.transform = 'none';
       hoja.classList.remove('volteada');
+      hoja.style.display = 'none';
     });
 
-    // Muestra solo la cara activa en móvil para evitar encimamientos
-    carasMovil.forEach((cara, idx) => {
-      cara.style.transform = 'none';
-      cara.style.backfaceVisibility = 'visible';
-      cara.style.webkitBackfaceVisibility = 'visible';
+    todasLasCaras.forEach((cara, idx) => {
       cara.style.display = idx === pasoMovil ? 'flex' : 'none';
     });
+
+    const hojaActiva = todasLasCaras[pasoMovil]?.closest('.hoja');
+    if (hojaActiva) {
+      hojaActiva.style.display = 'block';
+    }
     return;
   }
 
-  // Modo escritorio (libro abierto en 3D)
-  carasMovil.forEach((cara) => {
+  // Modo escritorio: muestra todas las caras y controla el giro 3D por hoja
+  todasLasCaras.forEach((cara) => {
     cara.style.display = 'flex';
-    cara.style.backfaceVisibility = '';
-    cara.style.webkitBackfaceVisibility = '';
-    if (cara.classList.contains('atras')) {
-      cara.style.transform = 'rotateY(180deg)';
-    } else {
-      cara.style.transform = '';
-    }
   });
 
   if (hojaActual > 0 && hojaActual < totalHojas) {
@@ -63,20 +55,21 @@ function actualizarLibro() {
 
   hojas.forEach((hoja, index) => {
     hoja.style.display = 'block';
-    hoja.style.transform = '';
     if (index < hojaActual) {
       hoja.classList.add('volteada');
+      // Las hojas ya volteadas a la izquierda se ordenan de abajo hacia arriba
       hoja.style.zIndex = index + 1;
     } else {
       hoja.classList.remove('volteada');
-      hoja.style.zIndex = totalHojas - index;
+      // Las hojas sin voltear a la derecha van de arriba hacia abajo
+      hoja.style.zIndex = totalHojas - index + 10;
     }
   });
 }
 
 function siguienteHoja() {
   if (esMovil()) {
-    if (pasoMovil < carasMovil.length - 1) {
+    if (pasoMovil < todasLasCaras.length - 1) {
       pasoMovil++;
       actualizarLibro();
     }
@@ -116,24 +109,22 @@ if (btnReiniciar) {
   });
 }
 
-// Clic en las caras en móvil
-carasMovil.forEach((cara) => {
-  cara.addEventListener('click', () => {
+// Clic en las hojas (escritorio) o caras (móvil)
+todasLasCaras.forEach((cara, idx) => {
+  cara.addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+
     if (esMovil()) {
       siguienteHoja();
+      return;
     }
-  });
-});
 
-// Clic en las hojas en escritorio
-hojas.forEach((hoja, index) => {
-  hoja.addEventListener('click', () => {
-    if (!esMovil()) {
-      if (index === hojaActual) {
-        siguienteHoja();
-      } else if (index === hojaActual - 1) {
-        anteriorHoja();
-      }
+    const hoja = cara.closest('.hoja');
+    const indiceHoja = hojas.indexOf(hoja);
+    if (indiceHoja === hojaActual) {
+      siguienteHoja();
+    } else if (indiceHoja === hojaActual - 1) {
+      anteriorHoja();
     }
   });
 });
