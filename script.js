@@ -48,7 +48,6 @@ btnReiniciar.addEventListener('click', (e) => {
   actualizarLibro();
 });
 
-// Clic en las hojas
 hojas.forEach((hoja, index) => {
   hoja.addEventListener('click', () => {
     if (index === hojaActual) {
@@ -58,28 +57,3 @@ hojas.forEach((hoja, index) => {
     }
   });
 });
-
-// Navegación con teclado (flechas izquierda y derecha)
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight') siguienteHoja();
-  if (e.key === 'ArrowLeft') anteriorHoja();
-});
-
-// Gestos táctiles (swipe) para celular y tablet
-let toqueInicioX = 0;
-let toqueFinX = 0;
-
-libro.addEventListener('touchstart', (e) => {
-  toqueInicioX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-libro.addEventListener('touchend', (e) => {
-  toqueFinX = e.changedTouches[0].screenX;
-  const diferencia = toqueInicioX - toqueFinX;
-
-  if (diferencia > 45) {
-    siguienteHoja(); // Deslizar a la izquierda avanza
-  } else if (diferencia < -45) {
-    anteriorHoja(); // Deslizar a la derecha retrocede
-  }
-}, { passive: true });
