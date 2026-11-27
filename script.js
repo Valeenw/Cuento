@@ -4,18 +4,18 @@ const btnAnterior = document.getElementById('btn-anterior');
 const btnSiguiente = document.getElementById('btn-siguiente');
 const btnReiniciar = document.getElementById('btn-reiniciar');
 
-// Todas las caras en orden de lectura:
+// Orden lineal de caras para móvil:
 // 0: Portada | 1: Pág 1 | 2: Pág 2 | 3: Pág 3 | 4: Pág 4 | 5: Contraportada
-const todasLasCaras = [];
+const carasMovil = [];
 hojas.forEach((hoja) => {
   const frente = hoja.querySelector('.cara.frente');
   const atras = hoja.querySelector('.cara.atras');
-  if (frente) todasLasCaras.push(frente);
-  if (atras) todasLasCaras.push(atras);
+  if (frente) carasMovil.push(frente);
+  if (atras) carasMovil.push(atras);
 });
 
-let hojaActual = 0; // Escritorio: 0 = cerrada, 1..totalHojas = hojas volteadas
-let pasoMovil = 0;  // Móvil: 0..todasLasCaras.length - 1
+let hojaActual = 0; // Escritorio: 0 = cerrada, 1..hojas.length = hojas volteadas
+let pasoMovil = 0;  // Móvil: 0..carasMovil.length - 1
 const totalHojas = hojas.length;
 
 function esMovil() {
@@ -29,24 +29,22 @@ function actualizarLibro() {
     hojas.forEach((hoja) => {
       hoja.classList.remove('volteada');
       hoja.style.display = 'none';
+      hoja.style.zIndex = '';
     });
 
-    todasLasCaras.forEach((cara, idx) => {
+    carasMovil.forEach((cara, idx) => {
       cara.style.display = idx === pasoMovil ? 'flex' : 'none';
+      cara.style.visibility = idx === pasoMovil ? 'visible' : 'hidden';
     });
 
-    const hojaActiva = todasLasCaras[pasoMovil]?.closest('.hoja');
+    const hojaActiva = carasMovil[pasoMovil]?.closest('.hoja');
     if (hojaActiva) {
       hojaActiva.style.display = 'block';
     }
     return;
   }
 
-  // Modo escritorio: muestra todas las caras y controla el giro 3D por hoja
-  todasLasCaras.forEach((cara) => {
-    cara.style.display = 'flex';
-  });
-
+  // Modo escritorio: libro abierto en 3D sin empalme de caras
   if (hojaActual > 0 && hojaActual < totalHojas) {
     libro.classList.add('abierto');
   } else {
@@ -55,21 +53,33 @@ function actualizarLibro() {
 
   hojas.forEach((hoja, index) => {
     hoja.style.display = 'block';
-    if (index < hojaActual) {
+    const frente = hoja.querySelector('.cara.frente');
+    const atras = hoja.querySelector('.cara.atras');
+    const estaVolteada = index < hojaActual;
+
+    if (estaVolteada) {
       hoja.classList.add('volteada');
-      // Las hojas ya volteadas a la izquierda se ordenan de abajo hacia arriba
       hoja.style.zIndex = index + 1;
     } else {
       hoja.classList.remove('volteada');
-      // Las hojas sin voltear a la derecha van de arriba hacia abajo
       hoja.style.zIndex = totalHojas - index + 10;
+    }
+
+    // Evita que la cara oculta se empalme o se filtre a través de otras hojas
+    if (frente) {
+      frente.style.display = 'flex';
+      frente.style.visibility = estaVolteada ? 'hidden' : 'visible';
+    }
+    if (atras) {
+      atras.style.display = 'flex';
+      atras.style.visibility = estaVolteada ? 'visible' : 'hidden';
     }
   });
 }
 
 function siguienteHoja() {
   if (esMovil()) {
-    if (pasoMovil < todasLasCaras.length - 1) {
+    if (pasoMovil < carasMovil.length - 1) {
       pasoMovil++;
       actualizarLibro();
     }
@@ -109,8 +119,7 @@ if (btnReiniciar) {
   });
 }
 
-// Clic en las hojas (escritorio) o caras (móvil)
-todasLasCaras.forEach((cara, idx) => {
+carasMovil.forEach((cara) => {
   cara.addEventListener('click', (e) => {
     if (e.target.closest('button')) return;
 
