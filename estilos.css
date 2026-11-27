@@ -1,0 +1,260 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(145deg, #F5EEDD 0%, #84B3CE 100%);
+  font-family: 'Georgia', serif;
+  color: #16587B;
+  overflow-x: hidden;
+}
+
+/* Espacio 3D */
+.escena {
+  perspective: 1800px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.libro {
+  position: relative;
+  width: 370px;
+  height: 500px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease;
+}
+
+/* Centra el libro abierto en pantallas grandes */
+.libro.abierto {
+  transform: translateX(185px);
+}
+
+.hoja {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hoja.volteada {
+  transform: rotateY(-180deg);
+}
+
+.cara {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 32px 28px;
+  background-color: #F5EEDD;
+  border-radius: 6px 20px 20px 6px;
+  box-shadow: inset 12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  line-height: 1.65;
+  font-size: 1.05rem;
+}
+
+.cara.atras {
+  transform: rotateY(180deg);
+  border-radius: 20px 6px 6px 20px;
+  box-shadow: inset -12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
+}
+
+/* Portada y Contraportada */
+.portada, .contraportada {
+  background: linear-gradient(160deg, #16587B 0%, #84B3CE 150%);
+  color: #F5EEDD;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #16587B;
+}
+
+.decoracion-sol {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.portada h1 {
+  font-size: 2.3rem;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+  color: #F5EEDD;
+}
+
+.subtitulo {
+  font-style: italic;
+  color: #F5EEDD;
+  opacity: 0.9;
+}
+
+.indicador {
+  margin-top: 40px;
+  font-size: 0.85rem;
+  background: rgba(245, 238, 221, 0.2);
+  color: #F5EEDD;
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+/* Espacio para ilustraciones */
+.marco-ilustracion {
+  width: 100%;
+  height: 210px;
+  background-color: rgba(132, 179, 206, 0.22);
+  border: 2px dashed #84B3CE;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #16587B;
+  font-size: 0.95rem;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.marco-ilustracion img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cara p strong {
+  color: #16587B;
+  background-color: rgba(132, 179, 206, 0.35);
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.num-pagina {
+  align-self: flex-end;
+  font-size: 0.85rem;
+  color: #84B3CE;
+  font-weight: bold;
+}
+
+.cara.atras .num-pagina {
+  align-self: flex-start;
+}
+
+/* Botones */
+.controles {
+  display: flex;
+  gap: 16px;
+}
+
+button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 24px;
+  background-color: #16587B;
+  color: #F5EEDD;
+  font-family: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.2s;
+  box-shadow: 0 4px 12px rgba(22, 88, 123, 0.25);
+}
+
+button:hover {
+  background-color: #84B3CE;
+  color: #16587B;
+  transform: translateY(-1px);
+}
+
+.btn-interno {
+  margin-top: 24px;
+  background-color: #F5EEDD;
+  color: #16587B;
+  font-weight: bold;
+}
+
+.btn-interno:hover {
+  background-color: #84B3CE;
+  color: #16587B;
+}
+
+/* --- ADAPTACIÓN RESPONSIVA PARA CELULARES Y TABLETS --- */
+@media (max-width: 800px) {
+  .escena {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .libro {
+    width: 44vw;
+    max-width: 260px;
+    height: 62vw;
+    max-height: 360px;
+  }
+
+  .libro.abierto {
+    transform: translateX(22vw);
+  }
+
+  .cara {
+    padding: 14px 12px;
+    font-size: clamp(0.72rem, 2.3vw, 0.92rem);
+    line-height: 1.4;
+    border-radius: 4px 12px 12px 4px;
+  }
+
+  .cara.atras {
+    border-radius: 12px 4px 4px 12px;
+  }
+
+  .decoracion-sol {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+  }
+
+  .portada h1 {
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
+  }
+
+  .subtitulo, .indicador {
+    font-size: 0.72rem;
+  }
+
+  .indicador {
+    margin-top: 16px;
+    padding: 4px 10px;
+  }
+
+  .marco-ilustracion {
+    height: 42%;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+  }
+
+  .num-pagina {
+    font-size: 0.7rem;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+}
