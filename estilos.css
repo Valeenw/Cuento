@@ -6,182 +6,215 @@
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px;
   background: linear-gradient(145deg, #F5EEDD 0%, #84B3CE 100%);
   font-family: 'Georgia', serif;
   color: #16587B;
 }
 
-/* Espacio 3D */
-.escena {
-  perspective: 1800px;
-  margin-bottom: 28px;
+.contenedor-cuento {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 22px;
 }
 
-.libro {
+.libro-marco {
   position: relative;
-  width: 370px;
-  height: 500px;
-  transform-style: preserve-3d;
-  transition: transform 0.8s ease;
+  width: min(90vw, 400px);
+  height: min(72dvh, 540px);
+  min-height: 430px;
 }
 
-/* Centra el libro abierto */
-.libro.abierto {
-  transform: translateX(185px);
-}
-
-.hoja {
-  position: absolute;
+.vista {
+  display: none;
   width: 100%;
   height: 100%;
-  top: 0;
-  left: 0;
-  transform-origin: left center;
-  transform-style: preserve-3d;
-  transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1);
-  cursor: pointer;
+  border-radius: 22px;
+  padding: 28px 24px;
+  box-shadow: 0 14px 32px rgba(22, 88, 123, 0.18);
+  animation: aparecer 0.35s ease;
 }
 
-.hoja.volteada {
-  transform: rotateY(-180deg);
-}
-
-.cara {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding: 36px 32px;
-  background-color: #F5EEDD;
-  border-radius: 6px 20px 20px 6px;
-  box-shadow: inset 12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
-  backface-visibility: hidden;
+.vista.activa {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  line-height: 1.65;
-  font-size: 1.05rem;
 }
 
-.cara.atras {
-  transform: rotateY(180deg);
-  border-radius: 20px 6px 6px 20px;
-  box-shadow: inset -12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Portada y Contraportada */
-.portada, .contraportada {
-  background: linear-gradient(160deg, #16587B 0%, #84B3CE 150%);
+.portada,
+.contraportada {
+  background: linear-gradient(160deg, #16587B 0%, #84B3CE 165%);
   color: #F5EEDD;
   text-align: center;
-  justify-content: center;
-  align-items: center;
   border: 3px solid #16587B;
 }
 
-.decoracion-sol {
+.vista.portada.activa,
+.vista.contraportada.activa {
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.sol {
   font-size: 2.8rem;
-  margin-bottom: 12px;
 }
 
 .portada h1 {
-  font-size: 2.3rem;
-  margin-bottom: 8px;
-  letter-spacing: 0.5px;
+  font-size: clamp(1.9rem, 6vw, 2.4rem);
   color: #F5EEDD;
 }
 
 .subtitulo {
   font-style: italic;
   color: #F5EEDD;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-.indicador {
-  margin-top: 40px;
+.pista {
+  margin-top: 24px;
   font-size: 0.85rem;
-  background: rgba(245, 238, 221, 0.2);
   color: #F5EEDD;
-  padding: 6px 14px;
-  border-radius: 20px;
+  background: rgba(245, 238, 221, 0.2);
+  padding: 7px 16px;
+  border-radius: 999px;
 }
 
-/* Espacio para ilustraciones */
-.marco-ilustracion {
+.contraportada h2 {
+  font-size: 2rem;
+  color: #F5EEDD;
+}
+
+.contraportada p {
+  max-width: 26ch;
+  line-height: 1.6;
+  color: #F5EEDD;
+}
+
+/* Páginas interiores */
+.pagina {
+  background-color: #F5EEDD;
+  border: 2px solid rgba(132, 179, 206, 0.55);
+}
+
+.ilustracion {
   width: 100%;
-  height: 210px;
+  height: 46%;
+  min-height: 165px;
   background-color: rgba(132, 179, 206, 0.22);
   border: 2px dashed #84B3CE;
   border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   color: #16587B;
   font-size: 0.95rem;
-  overflow: hidden;
-  margin-bottom: 16px;
 }
 
-.marco-ilustracion img {
+.ilustracion img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.cara p strong {
+.pagina p {
+  font-size: clamp(0.98rem, 2.6vw, 1.08rem);
+  line-height: 1.65;
   color: #16587B;
+}
+
+.pagina p strong {
   background-color: rgba(132, 179, 206, 0.35);
+  color: #16587B;
   padding: 1px 6px;
   border-radius: 8px;
 }
 
-.num-pagina {
+.num-pag {
   align-self: flex-end;
-  font-size: 0.85rem;
-  color: #84B3CE;
+  font-size: 0.82rem;
   font-weight: bold;
-}
-
-.cara.atras .num-pagina {
-  align-self: flex-start;
+  color: #84B3CE;
 }
 
 /* Botones */
 .controles {
   display: flex;
-  gap: 16px;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 button {
   padding: 10px 22px;
   border: none;
-  border-radius: 24px;
+  border-radius: 999px;
   background-color: #16587B;
   color: #F5EEDD;
   font-family: inherit;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: transform 0.15s, background-color 0.2s;
-  box-shadow: 0 4px 12px rgba(22, 88, 123, 0.25);
+  box-shadow: 0 4px 12px rgba(22, 88, 123, 0.22);
+  transition: transform 0.15s ease, background-color 0.2s ease, opacity 0.2s ease;
 }
 
-button:hover {
+button:hover:not(:disabled) {
   background-color: #84B3CE;
   color: #16587B;
   transform: translateY(-1px);
 }
 
-.btn-interno {
-  margin-top: 24px;
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-claro {
+  margin-top: 12px;
   background-color: #F5EEDD;
   color: #16587B;
   font-weight: bold;
 }
 
-.btn-interno:hover {
+.btn-claro:hover:not(:disabled) {
   background-color: #84B3CE;
   color: #16587B;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 480px) {
+  body {
+    padding: 14px;
+  }
+
+  .libro-marco {
+    width: 92vw;
+    height: min(70dvh, 500px);
+    min-height: 400px;
+  }
+
+  .vista {
+    padding: 20px 18px;
+    border-radius: 18px;
+  }
 }

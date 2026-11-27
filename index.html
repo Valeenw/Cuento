@@ -8,71 +8,71 @@
 </head>
 <body>
 
-  <div class="escena">
-    <div class="libro" id="libro">
+  <main class="contenedor-cuento">
+    <div class="libro-marco">
 
-      
-      <div class="hoja" style="z-index: 3;">
-        <div class="cara frente portada">
-          <div class="decoracion-sol"></div>
-          <h1>La sombrita</h1>
-          <p class="subtitulo">Ramses Gallegos y Valeria Elias</p>
-          <span class="indicador">Haz clic para abrir →</span>
-        </div>
-        <div class="cara atras">
-          <div class="marco-ilustracion">
-            <!-- imagen cuando esten listas --> <!--<img src="img/escena1.png" alt="Lino en el hielo"--> 
-            <span> Escena 1</span>
-          </div>
-          <p>A mediodía, el sol brillaba fuerte sobre el hielo y Lino notó que algo oscuro se movía pegadito a sus pies: <strong>¡paso, paso!</strong>.</p>
-          <span class="num-pagina">1</span>
-        </div>
-      </div>
+      <!-- Vista 0: Portada -->
+      <section class="vista portada activa">
+        <div class="sol">☀️</div>
+        <h1>La sombrita</h1>
+        <p class="subtitulo">Un cuento sobre el hielo</p>
+        <span class="pista">Toca o haz clic en Siguiente →</span>
+      </section>
 
-      
-      <div class="hoja" style="z-index: 2;">
-        <div class="cara frente">
-          <div class="marco-ilustracion">
-            <!-- <img src="img/escena2.png" alt="Lino girando"> -->
-            <span> Escena 2</span> <!--se borra para cuando esten las imagenes>
-          </div>
-          <p>Lino giró rápido: <strong>¡flap, flap!</strong>. ¡La sombra también giró! Intentó pisarla despacito: <strong>¡paso, paso!</strong>. ¡La sombra seguía ahí!</p>
-          <span class="num-pagina">2</span>
+      <!-- Vista 1: Escena 1 -->
+      <section class="vista pagina">
+        <div class="ilustracion">
+          <!-- <img src="img/escena1.png" alt="Lino sobre el hielo"> -->
+          <span>Escena 1</span>
         </div>
-        <div class="cara atras">
-          <div class="marco-ilustracion">
-            <!-- <img src="img/escena3.png" alt="Zuri el zorro ártico"> -->
-            <span> Escena 3</span>
-          </div>
-          <p>Llegó Zuri, un zorro ártico, y le guiñó un ojo:<br><em>—Es tu sombrita, Lino. Viaja contigo adonde vayas.</em></p>
-          <span class="num-pagina">3</span>
-        </div>
-      </div>
+        <p>A mediodía, el sol brillaba fuerte sobre el hielo y Lino notó que algo oscuro se movía pegadito a sus pies: <strong>¡paso, paso!</strong>.</p>
+        <span class="num-pag">1 / 4</span>
+      </section>
 
-      
-      <div class="hoja" style="z-index: 1;">
-        <div class="cara frente">
-          <div class="marco-ilustracion">
-            <!-- <img src="img/escena4.png" alt="Lino bailando con su sombra"> -->
-            <span> Escena 4</span>
-          </div>
-          <p>Lino movió su colita de lado a lado y vio cómo su sombra bailaba igual. Ya no le sorprendió; caminó tranquilo sabiendo que iba acompañado.</p>
-          <span class="num-pagina">4</span>
+      <!-- Vista 2: Escena 2 -->
+      <section class="vista pagina">
+        <div class="ilustracion">
+          <!-- <img src="img/escena2.png" alt="Lino girando en el hielo"> -->
+          <span>Escena 2</span>
         </div>
-        <div class="cara atras contraportada">
-          <h2>Fin</h2>
-          
-          <button id="btn-reiniciar" class="btn-interno">Volver a leer</button>
+        <p>Lino giró rápido: <strong>¡flap, flap!</strong>. ¡La sombra también giró! Intentó pisarla despacito: <strong>¡paso, paso!</strong>. ¡La sombra seguía ahí!</p>
+        <span class="num-pag">2 / 4</span>
+      </section>
+
+      <!-- Vista 3: Escena 3 -->
+      <section class="vista pagina">
+        <div class="ilustracion">
+          <!-- <img src="img/escena3.png" alt="Zuri el zorro ártico"> -->
+          <span>Escena 3</span>
         </div>
-      </div>
+        <p>Llegó Zuri, un zorro ártico, y le guiñó un ojo:<br><em>—Es tu sombrita, Lino. Viaja contigo adonde vayas.</em></p>
+        <span class="num-pag">3 / 4</span>
+      </section>
+
+      <!-- Vista 4: Escena 4 -->
+      <section class="vista pagina">
+        <div class="ilustracion">
+          <!-- <img src="img/escena4.png" alt="Lino y su sombra bailando"> -->
+          <span>Escena 4</span>
+        </div>
+        <p>Lino movió su colita de lado a lado y vio cómo su sombra bailaba igual. Ya no le sorprendió; caminó tranquilo sabiendo que iba acompañado.</p>
+        <span class="num-pag">4 / 4</span>
+      </section>
+
+      <!-- Vista 5: Contraportada -->
+      <section class="vista contraportada">
+        <h2>Fin</h2>
+        <p>Siempre hay alguien caminando contigo.</p>
+        <button type="button" id="btn-reiniciar" class="btn-claro">Volver a leer</button>
+      </section>
 
     </div>
-  </div>
+  </main>
 
-  <div class="controles">
-    <button id="btn-anterior">← Anterior</button>
-    <button id="btn-siguiente">Siguiente →</button>
-  </div>
+  <nav class="controles" aria-label="Navegación del cuento">
+    <button type="button" id="btn-anterior">← Anterior</button>
+    <button type="button" id="btn-siguiente">Siguiente →</button>
+  </nav>
 
   <script src="script.js"></script>
 </body>

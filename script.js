@@ -1,59 +1,68 @@
-const libro = document.getElementById('libro');
-const hojas = document.querySelectorAll('.hoja');
+const vistas = Array.from(document.querySelectorAll('.vista'));
 const btnAnterior = document.getElementById('btn-anterior');
 const btnSiguiente = document.getElementById('btn-siguiente');
 const btnReiniciar = document.getElementById('btn-reiniciar');
 
-let hojaActual = 0;
-const totalHojas = hojas.length;
+let indiceActual = 0;
 
-function actualizarLibro() {
-  if (hojaActual > 0 && hojaActual < totalHojas) {
-    libro.classList.add('abierto');
-  } else {
-    libro.classList.remove('abierto');
+function mostrarVista(nuevoIndice) {
+  if (nuevoIndice < 0 || nuevoIndice >= vistas.length) return;
+  indiceActual = nuevoIndice;
+
+  vistas.forEach((vista, i) => {
+    vista.classList.toggle('activa', i === indiceActual);
+  });
+
+  btnAnterior.disabled = indiceActual === 0;
+  btnSiguiente.disabled = indiceActual === vistas.length - 1;
+}
+
+function siguiente() {
+  if (indiceActual < vistas.length - 1) {
+    mostrarVista(indiceActual + 1);
   }
+}
 
-  hojas.forEach((hoja, index) => {
-    if (index < hojaActual) {
-      hoja.classList.add('volteada');
-      hoja.style.zIndex = index + 1;
-    } else {
-      hoja.classList.remove('volteada');
-      hoja.style.zIndex = totalHojas - index;
-    }
+function anterior() {
+  if (indiceActual > 0) {
+    mostrarVista(indiceActual - 1);
+  }
+}
+
+btnSiguiente.addEventListener('click', siguiente);
+btnAnterior.addEventListener('click', anterior);
+
+if (btnReiniciar) {
+  btnReiniciar.addEventListener('click', (e) => {
+    e.stopPropagation();
+    mostrarVista(0);
   });
 }
 
-function siguienteHoja() {
-  if (hojaActual < totalHojas) {
-    hojaActual++;
-    actualizarLibro();
-  }
-}
-
-function anteriorHoja() {
-  if (hojaActual > 0) {
-    hojaActual--;
-    actualizarLibro();
-  }
-}
-
-btnSiguiente.addEventListener('click', siguienteHoja);
-btnAnterior.addEventListener('click', anteriorHoja);
-
-btnReiniciar.addEventListener('click', (e) => {
-  e.stopPropagation();
-  hojaActual = 0;
-  actualizarLibro();
-});
-
-hojas.forEach((hoja, index) => {
-  hoja.addEventListener('click', () => {
-    if (index === hojaActual) {
-      siguienteHoja();
-    } else if (index === hojaActual - 1) {
-      anteriorHoja();
-    }
+vistas.forEach((vista) => {
+  vista.addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+    siguiente();
   });
 });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') siguiente();
+  if (e.key === 'ArrowLeft') anterior();
+});
+
+let inicioX = 0;
+const marco = document.querySelector('.libro-marco');
+
+marco.addEventListener('touchstart', (e) => {
+  inicioX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+marco.addEventListener('touchend', (e) => {
+  const finX = e.changedTouches[0].screenX;
+  const diff = inicioX - finX;
+  if (diff > 45) siguiente();
+  if (diff < -45) anterior();
+}, { passive: true });
+
+mostrarVista(0);
