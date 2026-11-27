@@ -20,7 +20,7 @@ body {
 
 /* Espacio 3D */
 .escena {
-  perspective: 2000px;
+  perspective: 1800px;
   margin-bottom: 24px;
   display: flex;
   justify-content: center;
@@ -29,14 +29,15 @@ body {
 
 .libro {
   position: relative;
-  width: 380px;
-  height: 510px;
+  width: 370px;
+  height: 500px;
   transform-style: preserve-3d;
-  transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.8s ease;
 }
 
+/* Centra el libro abierto en pantallas grandes */
 .libro.abierto {
-  transform: translateX(190px);
+  transform: translateX(185px);
 }
 
 .hoja {
@@ -47,7 +48,7 @@ body {
   left: 0;
   transform-origin: left center;
   transform-style: preserve-3d;
-  transition: transform 0.85s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -59,29 +60,30 @@ body {
 
 .cara {
   position: absolute;
-  inset: 0;
+  width: 100%;
+  height: 100%;
   padding: 32px 28px;
   background-color: #F5EEDD;
   border-radius: 6px 20px 20px 6px;
-  box-shadow: inset 12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.15);
+  box-shadow: inset 12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   line-height: 1.65;
-  font-size: 1.03rem;
+  font-size: 1.05rem;
 }
 
 .cara.atras {
   transform: rotateY(180deg);
   border-radius: 20px 6px 6px 20px;
-  box-shadow: inset -12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.15);
+  box-shadow: inset -12px 0 24px rgba(22, 88, 123, 0.08), 0 10px 25px rgba(22, 88, 123, 0.16);
 }
 
 /* Portada y Contraportada */
 .portada, .contraportada {
-  background: linear-gradient(160deg, #16587B 0%, #84B3CE 160%);
+  background: linear-gradient(160deg, #16587B 0%, #84B3CE 150%);
   color: #F5EEDD;
   text-align: center;
   justify-content: center;
@@ -95,21 +97,22 @@ body {
 }
 
 .portada h1 {
-  font-size: 2.2rem;
+  font-size: 2.3rem;
   margin-bottom: 8px;
+  letter-spacing: 0.5px;
   color: #F5EEDD;
 }
 
 .subtitulo {
   font-style: italic;
   color: #F5EEDD;
-  opacity: 0.92;
+  opacity: 0.9;
 }
 
 .indicador {
-  margin-top: 36px;
+  margin-top: 40px;
   font-size: 0.85rem;
-  background: rgba(245, 238, 221, 0.22);
+  background: rgba(245, 238, 221, 0.2);
   color: #F5EEDD;
   padding: 6px 14px;
   border-radius: 20px;
@@ -118,7 +121,7 @@ body {
 /* Espacio para ilustraciones */
 .marco-ilustracion {
   width: 100%;
-  height: 205px;
+  height: 210px;
   background-color: rgba(132, 179, 206, 0.22);
   border: 2px dashed #84B3CE;
   border-radius: 16px;
@@ -159,8 +162,6 @@ body {
 .controles {
   display: flex;
   gap: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 button {
@@ -194,56 +195,66 @@ button:hover {
   color: #16587B;
 }
 
-/* Celulares y pantallas angostas */
+/* --- ADAPTACIÓN RESPONSIVA PARA CELULARES Y TABLETS --- */
 @media (max-width: 800px) {
-  body {
-    padding: 16px;
-  }
-
   .escena {
     width: 100%;
-    perspective: none;
-    margin-bottom: 20px;
+    overflow: visible;
   }
 
   .libro {
-    width: min(88vw, 350px);
-    height: min(68dvh, 470px);
-    transform: none !important;
-    transform-style: flat;
+    width: 44vw;
+    max-width: 260px;
+    height: 62vw;
+    max-height: 360px;
   }
 
-  .hoja,
-  .hoja.volteada {
-    position: static;
-    width: 100%;
-    height: 100%;
-    transform: none !important;
-    transform-style: flat;
-    transition: none;
+  .libro.abierto {
+    transform: translateX(22vw);
   }
 
-  .cara,
+  .cara {
+    padding: 14px 12px;
+    font-size: clamp(0.72rem, 2.3vw, 0.92rem);
+    line-height: 1.4;
+    border-radius: 4px 12px 12px 4px;
+  }
+
   .cara.atras {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform: none !important;
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
-    border-radius: 18px;
-    padding: 24px 20px;
-    font-size: clamp(0.92rem, 3.8vw, 1rem);
-    line-height: 1.58;
+    border-radius: 12px 4px 4px 12px;
   }
 
-  .marco-ilustracion {
-    height: 170px;
-    border-radius: 12px;
-    margin-bottom: 12px;
+  .decoracion-sol {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
   }
 
   .portada h1 {
-    font-size: clamp(1.55rem, 7vw, 2rem);
+    font-size: clamp(1.1rem, 4vw, 1.6rem);
+  }
+
+  .subtitulo, .indicador {
+    font-size: 0.72rem;
+  }
+
+  .indicador {
+    margin-top: 16px;
+    padding: 4px 10px;
+  }
+
+  .marco-ilustracion {
+    height: 42%;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 0.75rem;
+  }
+
+  .num-pagina {
+    font-size: 0.7rem;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
   }
 }
